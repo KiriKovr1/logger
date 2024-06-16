@@ -4,7 +4,7 @@ import (
 	"log/slog"
 	"os"
 
-	"github.com/KiriKovr1/logger/internal/handler/local"
+	"github.com/KiriKovr1/logger/pkg/handler/local"
 )
 
 func main() {
@@ -14,11 +14,14 @@ func main() {
 		},
 	}
 
-	logger := slog.New(local.New(os.Stdout, opts))
-	logger.With(slog.String("op", "cmd.main"))
+	handler := local.New(os.Stdout, opts)
 
-	logger.Debug("Debug message")
+	logger := slog.New(handler)
+
+	l := logger.With(slog.String("a", "a"))
+
+	l.Debug("Debug message")
 	logger.Info("Info message")
 	logger.Warn("Warning message")
-	logger.Error("Error message", slog.String("op", "cmd.main"))
+	logger.Error("Error message")
 }
